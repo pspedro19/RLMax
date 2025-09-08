@@ -83,7 +83,8 @@
       "Bash(pip show:*)",
       "Read(//c/Users/pedro/**)",
       "Bash(export:*)",
-      "Bash(sed:*)"
+      "Bash(sed:*)",
+      "Bash(git add:*)"
     ],
     "defaultMode": "acceptEdits",
     "additionalDirectories": [
