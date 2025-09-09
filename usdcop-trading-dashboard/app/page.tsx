@@ -450,33 +450,33 @@ export default function TradingDashboard() {
     }
   }, [router]);
   
-  // Centralized sidebar state management
+  // Unified Navigation Hub state management
   const sidebarState = useSidebarState();
   const {
     // State
-    leftSidebarCollapsed,
+    leftSidebarCollapsed: navigationHubCollapsed,
     navigationSidebarOpen: sidebarOpen,
     isDesktop,
     isMobile,
     viewportWidth,
     autoHideEnabled,
-    // Actions
-    toggleLeftSidebar,
+    // Actions  
+    toggleLeftSidebar: toggleNavigationHub,
     toggleNavigationSidebar,
     toggleBothSidebars,
-    collapseLeftSidebar,
-    expandLeftSidebar,
+    collapseLeftSidebar: collapseNavigationHub,
+    expandLeftSidebar: expandNavigationHub,
     openNavigationSidebar,
     closeNavigationSidebar,
     setAutoHide,
     resetToDefaults,
     forceSync,
     // Calculations
-    leftSidebarWidth,
+    leftSidebarWidth: navigationHubWidth,
     navigationSidebarWidth,
     totalSidebarWidth,
     mainContentMarginLeft,
-    isLeftSidebarVisible,
+    isLeftSidebarVisible: isNavigationHubVisible,
     isNavigationSidebarVisible,
   } = sidebarState;
   
@@ -484,12 +484,12 @@ export default function TradingDashboard() {
   const responsiveLayout = useResponsiveLayout(sidebarState);
   const breakpoints = useBreakpoints(viewportWidth);
   
-  // Navigation state
+  // Navigation state - unified single panel
   const [activeView, setActiveView] = useState('enhanced');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
-  const [rightSidebarCollapsed, setRightSidebarCollapsed] = useState(false);
   const [username, setUsername] = useState<string>('');
+  const [tradingTerminalMode, setTradingTerminalMode] = useState(false);
   
   // Market and data controls state
   const [isPlaying, setIsPlaying] = useState(false);
@@ -507,17 +507,17 @@ export default function TradingDashboard() {
 
   const categories = ['Trading', 'Risk', 'Pipeline', 'System'];
   
-  // Enhanced sidebar toggle handlers (using centralized state)
-  const handleLeftSidebarToggle = useCallback(() => {
-    toggleLeftSidebar();
-  }, [toggleLeftSidebar]);
+  // Navigation Hub toggle handlers (unified single panel)
+  const handleNavigationHubToggle = useCallback(() => {
+    toggleNavigationHub();
+  }, [toggleNavigationHub]);
 
   const handleNavigationSidebarToggle = useCallback(() => {
     toggleNavigationSidebar();
   }, [toggleNavigationSidebar]);
 
-  const handleRightSidebarToggle = useCallback(() => {
-    setRightSidebarCollapsed(prev => !prev);
+  const handleTradingModeToggle = useCallback(() => {
+    setTradingTerminalMode(prev => !prev);
   }, []);
 
   const handleLogout = useCallback(() => {
@@ -618,10 +618,10 @@ export default function TradingDashboard() {
         handleNavigationSidebarToggle();
       }
       
-      // Ctrl/Cmd + B to toggle left sidebar (desktop only)
+      // Ctrl/Cmd + B to toggle navigation hub (desktop only)
       if ((event.ctrlKey || event.metaKey) && event.key === 'b' && window.innerWidth >= 1024) {
         event.preventDefault();
-        handleLeftSidebarToggle();
+        handleNavigationHubToggle();
       }
       
       // Ctrl/Cmd + Shift + N to toggle navigation sidebar (mobile)
@@ -630,10 +630,10 @@ export default function TradingDashboard() {
         handleNavigationSidebarToggle();
       }
       
-      // Ctrl/Cmd + Shift + R to toggle right sidebar (desktop)
-      if ((event.ctrlKey || event.metaKey) && event.shiftKey && event.key === 'R' && window.innerWidth >= 1024) {
+      // F key to toggle immersive trading mode
+      if (event.key === 'f' || event.key === 'F') {
         event.preventDefault();
-        handleRightSidebarToggle();
+        setTradingTerminalMode(prev => !prev);
       }
     };
 
@@ -644,7 +644,7 @@ export default function TradingDashboard() {
         clearTimeout(transitionTimeoutRef.current);
       }
     };
-  }, [sidebarOpen, handleNavigationSidebarToggle, handleLeftSidebarToggle, handleRightSidebarToggle]);
+  }, [sidebarOpen, handleNavigationSidebarToggle, handleNavigationHubToggle]);
 
   // Error boundary
   if (error) {
@@ -683,7 +683,7 @@ export default function TradingDashboard() {
         </div>
       </div>
 
-      {/* Enhanced Intelligent Sidebar Toggle Buttons */}
+      {/* Navigation Hub Toggle Button for Mobile */}
       <SidebarToggleButtons
         {...sidebarState}
         variant="floating"
@@ -691,56 +691,45 @@ export default function TradingDashboard() {
         className="xl:hidden"
         showLabels={false}
       />
-      
-      {/* Desktop Advanced Toggle Controls */}
-      {isDesktop && (
-        <SidebarToggleButtons
-          {...sidebarState}
-          variant="floating"
-          position="top-right"
-          className="hidden xl:flex"
-          showLabels={true}
-        />
-      )}
 
-      {/* Left Sidebar Eye Toggle Button for Desktop */}
+      {/* Navigation Hub Eye Toggle Button for Desktop */}
       {isDesktop && (
         <motion.button
-          onClick={handleLeftSidebarToggle}
+          onClick={handleNavigationHubToggle}
           className="fixed top-4 left-4 z-50 p-3 bg-slate-900/90 backdrop-blur-lg border border-slate-700/50 rounded-xl shadow-glass-lg hover:shadow-glass-xl transition-all duration-300 glass-button-primary hidden xl:flex items-center justify-center"
           variants={motionLibrary.components.glassButton}
           initial="initial"
           whileHover="hover"
           whileTap="tap"
-          title={leftSidebarCollapsed ? "Show Left Sidebar" : "Hide Left Sidebar"}
+          title={navigationHubCollapsed ? "Show Navigation Hub" : "Hide Navigation Hub"}
         >
           <motion.div
-            animate={{ rotate: leftSidebarCollapsed ? 0 : 180 }}
+            animate={{ rotate: navigationHubCollapsed ? 0 : 180 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="text-cyan-400"
           >
-            {leftSidebarCollapsed ? <Eye size={20} /> : <EyeOff size={20} />}
+            {navigationHubCollapsed ? <Eye size={20} /> : <EyeOff size={20} />}
           </motion.div>
         </motion.button>
       )}
 
-      {/* Right Sidebar Eye Toggle Button for Desktop */}
+      {/* Trading Terminal Mode Toggle Button */}
       {isDesktop && (
         <motion.button
-          onClick={handleRightSidebarToggle}
+          onClick={handleTradingModeToggle}
           className="fixed top-4 right-4 z-50 p-3 bg-slate-900/90 backdrop-blur-lg border border-slate-700/50 rounded-xl shadow-glass-lg hover:shadow-glass-xl transition-all duration-300 glass-button-primary hidden xl:flex items-center justify-center"
           variants={motionLibrary.components.glassButton}
           initial="initial"
           whileHover="hover"
           whileTap="tap"
-          title={rightSidebarCollapsed ? "Show Navigation Hub" : "Hide Navigation Hub"}
+          title={tradingTerminalMode ? "Exit Trading Mode" : "Enter Trading Mode"}
         >
           <motion.div
-            animate={{ rotate: rightSidebarCollapsed ? 180 : 0 }}
+            animate={{ scale: tradingTerminalMode ? 1.2 : 1 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="text-purple-400"
+            className={tradingTerminalMode ? "text-green-400" : "text-purple-400"}
           >
-            {rightSidebarCollapsed ? <Eye size={20} /> : <EyeOff size={20} />}
+            {tradingTerminalMode ? <Target size={20} /> : <Activity size={20} />}
           </motion.div>
         </motion.button>
       )}
@@ -773,36 +762,15 @@ export default function TradingDashboard() {
         </motion.div>
       </div>
 
-      {/* Enhanced AnimatedSidebar Integration - Fully Responsive */}
+      {/* Unified Navigation Hub - Single Left Panel */}
       <div className={`fixed inset-y-0 left-0 z-40 transform transition-all duration-300 ease-in-out xl:translate-x-0 ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
       }`}>
         <div className="h-full flex">
-          {/* AnimatedSidebar for controls - Fixed with proper handlers */}
-          <div className="hidden lg:block">
-            <AnimatedSidebar
-              onPlayPause={handlePlayPause}
-              onReset={handleReset}
-              onAlignDataset={handleAlignDataset}
-              isPlaying={isPlaying}
-              isRealtime={isRealtime}
-              dataSource={dataSource}
-              onDataSourceChange={handleDataSourceChange}
-              marketStatus={marketStatus}
-              currentPrice={4150.25 + (Math.random() - 0.5) * 20}
-              priceChange={15.75 + (Math.random() - 0.5) * 10}
-              priceChangePercent={0.38 + (Math.random() - 0.5) * 0.5}
-              collapsed={leftSidebarCollapsed}
-              onToggleCollapse={handleLeftSidebarToggle}
-              isVisible={isLeftSidebarVisible}
-              width={leftSidebarWidth}
-            />
-          </div>
-          
-          {/* Navigation Sidebar - Responsive */}
+          {/* Unified Navigation Hub */}
           <div className={`transition-all duration-300 ease-in-out bg-slate-900/95 backdrop-blur-xl border-r border-slate-700/50 h-full overflow-hidden ${
-            rightSidebarCollapsed 
-              ? 'w-0 opacity-0 pointer-events-none' 
+            navigationHubCollapsed 
+              ? 'w-16 opacity-100' 
               : 'w-80 sm:w-96 lg:w-80 opacity-100'
           }`}>
             {/* Header with gradient border - Responsive */}

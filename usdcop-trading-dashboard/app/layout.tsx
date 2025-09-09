@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
+import Providers from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -92,13 +93,15 @@ export default function RootLayout({
         className={`${inter.className} antialiased`}
         suppressHydrationWarning
       >
-        <ErrorBoundary
-          level="page"
-          maxRetries={1}
-          showDetails={true}
-        >
-          {children}
-        </ErrorBoundary>
+        <Providers>
+          <ErrorBoundary
+            level="page"
+            maxRetries={1}
+            showDetails={true}
+          >
+            {children}
+          </ErrorBoundary>
+        </Providers>
       </body>
     </html>
   );

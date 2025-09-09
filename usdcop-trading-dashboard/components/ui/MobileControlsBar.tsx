@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Play, 
@@ -43,6 +43,12 @@ export function MobileControlsBar({
   priceChange = 15.75,
   priceChangePercent = 0.38
 }: MobileControlsBarProps) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const marketStatusConfig = {
     'open': { color: 'text-green-400', bg: 'bg-green-500/20', label: 'Open' },
     'closed': { color: 'text-red-400', bg: 'bg-red-500/20', label: 'Closed' },
@@ -101,7 +107,7 @@ export function MobileControlsBar({
               </div>
               <div>
                 <div className="text-sm font-bold text-white">
-                  ${currentPrice.toLocaleString('en-US')}
+                  ${mounted ? currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 3 }) : currentPrice.toFixed(3)}
                 </div>
                 <div className={`text-xs flex items-center gap-1 ${priceChange >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
                   {priceChange >= 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}

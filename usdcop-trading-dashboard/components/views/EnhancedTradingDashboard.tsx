@@ -58,7 +58,7 @@ const EnhancedTradingDashboard: React.FC = () => {
   } = useMarketStore();
 
   // Calculate price change percentage
-  const priceChangePercent = candles.length > 1 
+  const priceChangePercent = candles && candles.length > 1 
     ? ((candles[candles.length - 1].close - candles[0].close) / candles[0].close) * 100 
     : 0;
 

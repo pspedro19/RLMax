@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  ChartCandlestick, 
+  CandlestickChart, 
   Activity, 
   Settings, 
   Database, 
@@ -72,7 +72,7 @@ export function AnimatedSidebar({
   const menuItems = [
     {
       id: 'chart',
-      icon: ChartCandlestick,
+      icon: CandlestickChart,
       label: 'Chart View',
       description: 'Main trading chart',
       color: 'text-blue-400'
@@ -129,7 +129,7 @@ export function AnimatedSidebar({
 
   // Fixed data sources to match actual system values
   const dataSources = [
-    { value: 'l1', label: 'L1 Features', icon: ChartCandlestick },
+    { value: 'l1', label: 'L1 Features', icon: CandlestickChart },
     { value: 'l0', label: 'L0 Raw Data', icon: Database },
     { value: 'mock', label: 'Mock Data', icon: Activity }
   ];

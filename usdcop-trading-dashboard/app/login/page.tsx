@@ -84,8 +84,8 @@ export default function LoginPage() {
         // Small delay to ensure storage is written
         await new Promise(resolve => setTimeout(resolve, 100));
         
-        // Redirect to dashboard
-        router.push('/');
+        // Redirect to trading terminal
+        router.push('/trading');
       } else {
         setError('Invalid username or password');
         setIsLoading(false);

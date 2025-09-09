@@ -1,4 +1,6 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* Bloomberg Terminal Professional Theme - Enhanced Glassmorphism System */
 :root {

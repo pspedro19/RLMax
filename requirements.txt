@@ -14,7 +14,6 @@ statsmodels>=0.14.0
 # Financial Analysis & Technical Indicators  
 ta>=0.10.0
 ta-lib>=0.4.25
-pandas-ta>=0.3.14b0
 
 # Data Storage & Serialization
 pyarrow>=10.0.0

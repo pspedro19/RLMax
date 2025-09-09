@@ -6,7 +6,7 @@ import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, L
 import { metricsCalculator, HedgeFundMetrics, Trade } from '@/lib/services/hedge-fund-metrics';
 import { minioClient, DataQuery } from '@/lib/services/minio-client';
 import { backtestClient, BacktestResults, BacktestKPIs, TradeRecord, DailyReturn } from '@/lib/services/backtest-client';
-import { TrendingUp, TrendingDown, Activity, DollarSign, Shield, BarChart3, Target, AlertTriangle, Download, Calendar, Clock, TrendingDown as TrendDown, ChartLine } from 'lucide-react';
+import { TrendingUp, TrendingDown, Activity, DollarSign, Shield, BarChart3, Target, AlertTriangle, Download, Calendar, Clock, TrendingDown as TrendDown, LineChart as ChartLine } from 'lucide-react';
 // Custom date formatting function with Spanish month names
 const formatDate = (date: Date, formatStr: string) => {
   const months = [
