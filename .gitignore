@@ -153,6 +153,4 @@ pipeline_state.json
 workspace/
 sandbox/
 experiments/
-research/**/node_modules/
-node_modules/
-USDCOP_Trading_RL/
+research/

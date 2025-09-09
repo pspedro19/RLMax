@@ -84,7 +84,8 @@
       "Read(//c/Users/pedro/**)",
       "Bash(export:*)",
       "Bash(sed:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git rm:*)"
     ],
     "defaultMode": "acceptEdits",
     "additionalDirectories": [
